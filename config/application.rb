@@ -25,3 +25,7 @@ module Taskflows
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+Rails.autoloaders.main.push_dir("app/services")
+Rails.autoloaders.main.push_dir("app/workers")
+

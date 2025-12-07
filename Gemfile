@@ -84,4 +84,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'factory_bot_rails'
   gem 'database_cleaner-active_record'
+  gem 'shoulda-matchers', '~> 5.0'
+  # Add fiddle to silence 'fiddle will no longer be part of default gems' warnings on Ruby 3.5+
+  gem 'fiddle'
+  # NOTE: tests use PostgreSQL via config/database.yml defaults
 end

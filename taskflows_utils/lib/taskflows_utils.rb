@@ -1,5 +1,5 @@
-require "taskflows_utils/version"
-require "taskflows_utils/analytics"
-
 module TaskflowsUtils
 end
+
+require 'date'
+require_relative 'taskflows_utils/priority_scoring'
