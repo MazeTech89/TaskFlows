@@ -5,7 +5,7 @@ default: &default
 
   # Personalizable values:
   username: <%= ENV.fetch("PG_USERNAME") { "mosesa" } %>
-  password: <%= ENV.fetch("PG_PASSWORD") { "TECHmomo4life01" } %>
+  password: <%= ENV.fetch("PG_PASSWORD") { "DanZiah132201$$" } %>
   # Prefer the IPv4 loopback for database connections to avoid IPv6/::1 auth issues on some Windows setups.
   host: <%= ENV.fetch("PG_HOST") { "127.0.0.1" } %>
   port: <%= ENV.fetch("PG_PORT") { 5432 } %>
@@ -13,7 +13,7 @@ default: &default
 development:
   <<: *default
   username: <%= ENV.fetch("PG_USERNAME") { "mosesa" } %>
-  password: <%= ENV.fetch("PG_PASSWORD") { "TECHmomo4life01" } %>
+  password: <%= ENV.fetch("PG_PASSWORD") { "DanZiah132201$$" } %>
   database: taskflows_development
 
 test:
