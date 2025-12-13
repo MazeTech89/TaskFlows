@@ -57,3 +57,32 @@ Push-Location taskflows_utils
 bundle exec rspec spec/priority_scoring_spec.rb --format documentation --color
 Pop-Location
 ```
+## Notes
+PostgreSQL database ownership must match the Rails DB user to avoid schema_migrations permission errors.
+
+## PostgreSQL Database Permissions Fix
+
+**Date:** 2025-12-13  
+**Author:** Mo Ade  
+
+To prevent `PG::InsufficientPrivilege` errors during Rails migrations:
+
+1. Ensure the Rails database user matches the database owner.
+2. Grant all privileges to the Rails user on the database, tables, sequences, and functions.
+3. Apply `ALTER DEFAULT PRIVILEGES` for future tables and sequences.
+
+### Commands Used
+```sql
+ALTER DATABASE taskflows_test OWNER TO mosesa;
+
+GRANT ALL PRIVILEGES ON DATABASE taskflows_test TO mosesa;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO mosesa;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO mosesa;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO mosesa;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT ALL PRIVILEGES ON TABLES TO mosesa;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT ALL PRIVILEGES ON SEQUENCES TO mosesa;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+    GRANT ALL PRIVILEGES ON FUNCTIONS TO mosesa;
