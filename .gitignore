@@ -38,3 +38,21 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Rails logs and temp files
+/log/*
+/tmp/*
+
+# Active Storage files
+/storage/*
+
+# Node dependencies
+/node_modules
+
+# Environment variables (SECURITY)
+.env
+
+# OS / Editor noise
+.DS_Store
+Thumbs.db
+
