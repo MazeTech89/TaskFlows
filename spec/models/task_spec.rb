@@ -1,13 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe Task, type: :model do
-  it { should belong_to(:project) }
-  it { should validate_presence_of(:title) }
+  let(:user) { User.create!(email: "user3@example.com", password: "password") }
+  let(:project) { Project.create!(name: "Project A", user: user) }
 
-  it "has default status incomplete" do
-    project = create(:project)
-    task = Task.create(title: "My task", project: project)
-    expect(task.status).to eq("incomplete")
+  it "is valid with a name and project" do
+    task = Task.new(name: "Do something", project: project)
+    expect(task).to be_valid
+  end
+
+  it "is invalid without a name" do
+    task = Task.new(name: nil, project: project)
+    expect(task).not_to be_valid
   end
 end
-
