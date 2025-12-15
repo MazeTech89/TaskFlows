@@ -1,5 +1,13 @@
 require 'rails_helper'
 
+let(:user) { FactoryBot.create(:user) }
+let!(:projects) { FactoryBot.create_list(:project, 3, user: user) }
+
+before do
+  assign(:projects, projects)
+end
+
+
 RSpec.describe "projects/index", type: :view do
   before(:each) do
     assign(:projects, [

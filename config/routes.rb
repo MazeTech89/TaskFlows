@@ -1,7 +1,15 @@
 Rails.application.routes.draw do
-  resources :tasks
-  resources :projects
   devise_for :users
+  
+  root "dashboard#index"
+  get "/dashboard", to: "dashboard#index", as: :dashboard
+  
+  resources :projects do
+    resources :tasks, only: [:new, :create]
+  end
+  
+  resources :tasks, except: [:new, :create]
+  resources :priorities
 
   resource :user,
          path: "users",
@@ -17,8 +25,6 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  resources :priorities
 
   # Defines the root path route ("/")
   # root "posts#index"

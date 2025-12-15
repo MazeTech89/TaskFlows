@@ -1,16 +1,110 @@
-<p style="color: green"><%= notice %></p>
+<div class="container mt-4">
+  <h1 class="mb-3">Tasks</h1>
 
-<% content_for :title, "Tasks" %>
+  <!-- Search and Filter Form -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <%= form_with url: tasks_path, method: :get, local: true, class: "row g-3" do |f| %>
+        <div class="col-md-3">
+          <%= f.label :search, "Search by Name", class: "form-label" %>
+          <%= f.text_field :search, value: params[:search], class: "form-control", placeholder: "Search tasks..." %>
+        </div>
+        
+        <div class="col-md-2">
+          <%= f.label :project_id, "Project", class: "form-label" %>
+          <%= f.collection_select :project_id, current_user.projects, :id, :name, 
+                                  { include_blank: "All Projects", selected: params[:project_id] }, 
+                                  class: "form-select" %>
+        </div>
+        
+        <div class="col-md-2">
+          <%= f.label :priority_id, "Priority", class: "form-label" %>
+          <%= f.collection_select :priority_id, Priority.all, :id, :name, 
+                                  { include_blank: "All Priorities", selected: params[:priority_id] }, 
+                                  class: "form-select" %>
+        </div>
+        
+        <div class="col-md-2">
+          <%= f.label :status, "Status", class: "form-label" %>
+          <%= f.select :status, options_for_select([
+                                  ['All', ''], 
+                                  ['Completed', 'completed'], 
+                                  ['Pending', 'pending']
+                                ], params[:status]), 
+                       {}, class: "form-select" %>
+        </div>
+        
+        <div class="col-md-2">
+          <%= f.label :due_date, "Due Date", class: "form-label" %>
+          <%= f.date_field :due_date, value: params[:due_date], class: "form-control" %>
+        </div>
+        
+        <div class="col-md-1 d-flex align-items-end">
+          <%= f.submit "Filter", class: "btn btn-primary w-100" %>
+        </div>
+      <% end %>
+      
+      <% if params[:search].present? || params[:project_id].present? || params[:priority_id].present? || params[:status].present? || params[:due_date].present? %>
+        <div class="mt-2">
+          <%= link_to "Clear Filters", tasks_path, class: "btn btn-secondary btn-sm" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
-<h1>Tasks</h1>
+  <%= link_to "New Task", new_project_task_path(current_user.projects.first || Project.create!(name: "Default Project", user: current_user)), class: "btn btn-success mb-3" if current_user.projects.any? %>
 
-<div id="tasks">
-  <% @tasks.each do |task| %>
-    <%= render task %>
-    <p>
-      <%= link_to "Show this task", task %>
-    </p>
+  <% if @tasks.any? %>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Task Name</th>
+          <th>Project</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tasks.each do |task| %>
+          <tr class="<%= 'table-danger' if task.overdue? %>">
+            <td><strong><%= task.name %></strong></td>
+            <td><%= link_to task.project&.name, project_path(task.project) %></td>
+            <td>
+              <%= task.due_date&.strftime("%b %d, %Y") || 'N/A' %>
+              <% if task.overdue? %>
+                <span class="badge bg-danger">Overdue!</span>
+              <% end %>
+            </td>
+            <td><%= task.priority&.name || 'None' %></td>
+            <td>
+              <% if task.completed? %>
+                <span class="badge bg-success">Completed</span>
+              <% else %>
+                <span class="badge bg-warning text-dark">Pending</span>
+              <% end %>
+            </td>
+            <td>
+              <%= link_to "Show", task_path(task), class: "btn btn-sm btn-info" %>
+              <%= link_to "Edit", edit_task_path(task), class: "btn btn-sm btn-warning" %>
+              <%= button_to "Delete", task_path(task), method: :delete, 
+                           data: { turbo_confirm: "Are you sure?" }, 
+                           class: "btn btn-sm btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <div class="mt-3">
+      <p class="text-muted">
+        Showing <%= @tasks.count %> task(s)
+      </p>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <p class="mb-0">No tasks found. <%= link_to "Create your first task", new_project_task_path(current_user.projects.first || Project.create!(name: "Default Project", user: current_user)) if current_user.projects.any? %></p>
+    </div>
   <% end %>
 </div>
-
-<%= link_to "New task", new_task_path %>

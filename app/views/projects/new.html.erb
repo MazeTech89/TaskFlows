@@ -1,12 +1,11 @@
-<% content_for :title, "New Task" %>
+<% content_for :title, "New Project" %>
 
-<h1>Tasks</h1>
-<h2>New Task</h2>
-<%= render "form", task: @task %>
+<h1>New Project</h1>
 
+<%= render "form", project: @project %>
 
 <br>
 
 <div>
-  <%= link_to "Back to Tasks", Tasks_path %>
+  <%= link_to "Back to Projects", projects_path, class: "btn btn-secondary" %>
 </div>

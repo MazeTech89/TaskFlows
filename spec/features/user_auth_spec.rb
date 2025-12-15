@@ -23,6 +23,13 @@ RSpec.feature "UserAuthentication", type: :feature do
     expect(page).to have_content("Signed in successfully")
   end
 
+
+
+
+
+
+
+  
   scenario "Unauthorized user cannot access projects page" do
     visit projects_path
     expect(current_path).to eq(new_user_session_path)

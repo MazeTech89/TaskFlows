@@ -1,20 +1,15 @@
-# spec/rails_helper.rb
+require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
-
-# Prevent database truncation if running in production
-abort("The Rails environment is running in production!") if Rails.env.production?
+abort("The Rails environment is running in production mode!") if Rails.env.production?
 
 require 'rspec/rails'
-require 'devise'
+require 'capybara/rails'
 require 'capybara/rspec'
-require 'support/factory_bot'
-require 'support/database_cleaner'
+require 'factory_bot_rails'
+require 'devise'
+require 'database_cleaner-active_record'
 
-# Require additional support files
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
-
-# Checks for pending migrations and applies them before tests are run.
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -23,45 +18,25 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 RSpec.configure do |config|
-  # Include FactoryBot methods
   config.include FactoryBot::Syntax::Methods
-
-  # Include Devise test helpers
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :system
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include Devise::Test::IntegrationHelpers, type: :feature
   config.include Warden::Test::Helpers
+  config.include Capybara::DSL
 
-  # Use Capybara DSL in feature specs
-  config.include Capybara::DSL, type: :feature
-
-  # Remove this line if you're not using ActiveRecord or don't want to
-  # use transactional fixtures
-  config.use_transactional_fixtures = false
-
-  # Configure DatabaseCleaner
   config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
-  config.before(:each, type: :feature) do
-    # :rack_test driver does not support JS, so use truncation for JS tests
-    DatabaseCleaner.strategy = :truncation
-  end
-
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-    DatabaseCleaner.clean
-    Warden.test_reset!
-  end
-
-  # RSpec Rails configurations
+  config.use_transactional_fixtures = false
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 end

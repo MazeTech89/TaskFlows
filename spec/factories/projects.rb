@@ -1,7 +1,6 @@
-# spec/factories/projects.rb
 FactoryBot.define do
   factory :project do
-    name { "Project Name" }
+    name { "Sample Project" }
     description { "Project description" }
     association :user
   end

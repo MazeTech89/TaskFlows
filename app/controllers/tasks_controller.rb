@@ -3,7 +3,26 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.includes(:project, :priority)
+                 .joins(:project)
+                 .where(projects: { user_id: current_user.id })
+    
+    # Apply filters
+    @tasks = @tasks.by_project(params[:project_id]) if params[:project_id].present?
+    @tasks = @tasks.by_priority(params[:priority_id]) if params[:priority_id].present?
+    @tasks = @tasks.by_completion_status(params[:status]) if params[:status].present?
+    
+    # Search by name
+    if params[:search].present?
+      @tasks = @tasks.where('tasks.name ILIKE ?', "%#{params[:search]}%")
+    end
+    
+    # Filter by due date
+    if params[:due_date].present?
+      @tasks = @tasks.where(due_date: params[:due_date])
+    end
+    
+    @tasks = @tasks.order(created_at: :desc)
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -12,16 +31,20 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   def new
+    @project = params[:project_id].present? ? current_user.projects.find(params[:project_id]) : current_user.projects.first
     @task = Task.new
+    @task.project_id = @project&.id
   end
 
   # GET /tasks/1/edit
   def edit
+    @project = @task.project
   end
 
   # POST /tasks or /tasks.json
   def create
     @task = Task.new(task_params)
+    @project = @task.project
 
     respond_to do |format|
       if @task.save
@@ -60,11 +83,13 @@ class TasksController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
-      @task = Task.find(params.expect(:id))
+      @task = Task.joins(:project)
+                  .where(projects: { user_id: current_user.id })
+                  .find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.expect(task: [ :title, :due_date, :completed, :project_id ])
+      params.expect(task: [ :name, :due_date, :completed, :project_id, :priority_id ])
     end
 end

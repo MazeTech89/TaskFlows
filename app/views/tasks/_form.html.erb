@@ -1,15 +1,57 @@
-<%= form_with(model: task, local: true) do |form| %>
+<% 
+  # Determine the correct form route based on whether task is new or existing
+  form_url = if @task.new_record? && @project
+               project_tasks_path(@project)
+             elsif @task.persisted?
+               task_path(@task)
+             else
+               tasks_path
+             end
+%>
+
+<%= form_with(model: @task, url: form_url, local: true) do |form| %>
+  <% if @task.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h4>
+      <ul>
+        <% @task.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="mb-3">
-    <%= form.label :title, class: "form-label" %>
-    <%= form.text_field :title, class: "form-control" %>
+    <%= form.label :name, "Task Name" %>
+    <%= form.text_field :name, class: "form-control", placeholder: "Enter task name", required: true %>
   </div>
+
   <div class="mb-3">
-    <%= form.label :due_date, class: "form-label" %>
+    <%= form.label :project_id, "Project" %>
+    <%= form.collection_select :project_id, current_user.projects, :id, :name, 
+                                { selected: @task.project_id || @project&.id }, 
+                                class: "form-select", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :due_date %>
     <%= form.date_field :due_date, class: "form-control" %>
   </div>
+
+  <div class="mb-3">
+    <%= form.label :priority_id, "Priority (Optional)" %>
+    <%= form.collection_select :priority_id, Priority.all, :id, :name, 
+                                { include_blank: "Select Priority" }, 
+                                class: "form-select" %>
+  </div>
+
   <div class="form-check mb-3">
     <%= form.check_box :completed, class: "form-check-input" %>
-    <%= form.label :completed, class: "form-check-label" %>
+    <%= form.label :completed, "Mark as completed", class: "form-check-label" %>
   </div>
-  <%= form.submit class: "btn btn-primary" %>
+
+  <div class="mt-3">
+    <%= form.submit @task.new_record? ? "Create Task" : "Update Task", class: "btn btn-primary" %>
+    <%= link_to "Cancel", @task.persisted? ? task_path(@task) : tasks_path, class: "btn btn-secondary" %>
+  </div>
 <% end %>

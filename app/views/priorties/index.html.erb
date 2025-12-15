@@ -1,0 +1,18 @@
+<div class="container mt-4">
+  <h1 class="mb-3">Priorities</h1>
+
+  <%= link_to "New Priority", new_priority_path, class: "btn btn-primary mb-3" %>
+
+  <% if @priorities.any? %>
+    <ul class="list-group">
+      <% @priorities.each do |priority| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <%= priority.name %>
+          <%= link_to "Show", priority_path(priority), class: "btn btn-sm btn-secondary" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No priorities found.</p>
+  <% end %>
+</div>

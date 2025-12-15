@@ -1,0 +1,151 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Dashboard</h1>
+  
+  <!-- Statistics Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Total Tasks</h5>
+          <h2><%= @total_tasks %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Completed</h5>
+          <h2><%= @completed_tasks %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">Pending</h5>
+          <h2><%= @pending_tasks %></h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title">Overdue</h5>
+          <h2><%= @overdue_tasks %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Completion Rate -->
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Overall Completion Rate</h5>
+          <div class="progress" style="height: 30px;">
+            <div class="progress-bar bg-success" role="progressbar" 
+                 style="width: <%= @completion_rate %>%;" 
+                 aria-valuenow="<%= @completion_rate %>" 
+                 aria-valuemin="0" 
+                 aria-valuemax="100">
+              <%= @completion_rate %>%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Tasks by Project</h5>
+          <%= pie_chart @tasks_by_project, donut: true, library: { plugins: { legend: { position: 'bottom' } } } %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Task Completion Trend (Last 7 Days)</h5>
+          <%= line_chart @completion_trend, xtitle: "Date", ytitle: "Tasks Completed" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% if @tasks_by_priority.any? %>
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Tasks by Priority</h5>
+          <%= column_chart @tasks_by_priority, xtitle: "Priority", ytitle: "Number of Tasks" %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Recent Projects</h5>
+          <ul class="list-group">
+            <% @recent_projects.each do |project| %>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <%= link_to project.name, project_path(project) %>
+                <span>
+                  <span class="badge bg-primary rounded-pill"><%= project.tasks_count %> tasks</span>
+                  <span class="badge bg-success rounded-pill"><%= project.completion_rate %>% complete</span>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <!-- Recent Tasks -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Recent Tasks</h5>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Project</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @recent_tasks.each do |task| %>
+                <tr>
+                  <td><%= link_to task.name, task_path(task) %></td>
+                  <td><%= task.project.name %></td>
+                  <td><%= task.priority&.name || 'None' %></td>
+                  <td><%= task.due_date&.strftime("%b %d, %Y") || 'N/A' %></td>
+                  <td>
+                    <% if task.completed? %>
+                      <span class="badge bg-success">Completed</span>
+                    <% elsif task.overdue? %>
+                      <span class="badge bg-danger">Overdue</span>
+                    <% else %>
+                      <span class="badge bg-warning">Pending</span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
