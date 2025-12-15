@@ -80,6 +80,8 @@ gem 'groupdate'
 gem 'bootstrap', '~> 5.3.0'
 gem 'jquery-rails'
 
+gem "sassc-rails"
+
 group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'factory_bot_rails'
