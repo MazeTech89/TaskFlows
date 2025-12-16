@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class PrioritiesIntegrationTest < ActionDispatch::IntegrationTest
   test "TODO: priorities integration flows" do

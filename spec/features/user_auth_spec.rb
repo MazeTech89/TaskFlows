@@ -29,7 +29,7 @@ RSpec.feature "UserAuthentication", type: :feature do
 
 
 
-  
+
   scenario "Unauthorized user cannot access projects page" do
     visit projects_path
     expect(current_path).to eq(new_user_session_path)

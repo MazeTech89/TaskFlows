@@ -31,21 +31,21 @@ module TaskflowsUtils
       # Calculate days until deadline (365 if no deadline)
       days = if deadline.nil?
                NO_DEADLINE_DEFAULT_DAYS
-             else
+      else
                (deadline - current_date).to_i.to_f
-             end
+      end
 
       # Time multiplier: closer deadlines = higher multiplier
       time_multiplier = if days <= 0
                           # Overdue: large multiplier that grows with lateness
                           # Fixed bug: use days.abs instead of [-days, 0].max
                           OVERDUE_BASE_MULTIPLIER + (days.abs / LATENESS_SCALE_DAYS)
-                        else
+      else
                           # Upcoming: add 0.0-1.0 based on proximity (within 30 days)
                           add = (PROXIMITY_WINDOW_DAYS - days) / PROXIMITY_WINDOW_DAYS
-                          add = [[add, 0.0].max, 1.0].min  # Clamp between 0 and 1
+                          add = [ [ add, 0.0 ].max, 1.0 ].min  # Clamp between 0 and 1
                           1.0 + add
-                        end
+      end
 
       base = importance * IMPORTANCE_MULTIPLIER
       effort_penalty = effort * EFFORT_PENALTY_RATE

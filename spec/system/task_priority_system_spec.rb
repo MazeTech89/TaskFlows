@@ -58,11 +58,11 @@ RSpec.describe "Task Priority System", type: :system do
     fill_in 'Name', with: 'Urgent New Task'
     select 'High', from: 'Priority'
     fill_in 'Due date', with: Date.today + 2
-    
+
     click_button 'Create Task'
 
     expect(page).to have_content('Urgent New Task')
-    
+
     created_task = Task.find_by(name: 'Urgent New Task')
     expect(created_task.calculate_priority_score).to be > 45
   end
@@ -83,10 +83,10 @@ RSpec.describe "Task Priority System", type: :system do
     click_button 'Update Task'
 
     expect(page).to have_content('Upgradable Task')
-    
+
     task.reload
     new_score = task.calculate_priority_score
-    
+
     expect(new_score).to be > initial_score
   end
 
@@ -102,7 +102,7 @@ RSpec.describe "Task Priority System", type: :system do
     visit tasks_path
 
     expect(page).to have_content(overdue_task.name)
-    
+
     # Verify overdue tasks have high calculated score
     expect(overdue_task.calculate_priority_score).to be > 200
   end

@@ -9,7 +9,7 @@ begin
   puts "Connected to Postgres at #{HOST} as #{SUPERUSER}"
 
   # Create role if missing
-  res = conn.exec_params("SELECT 1 FROM pg_roles WHERE rolname=$1", ['mosesa'])
+  res = conn.exec_params("SELECT 1 FROM pg_roles WHERE rolname=$1", [ 'mosesa' ])
   if res.ntuples == 0
     conn.exec("CREATE ROLE mosesa LOGIN PASSWORD 'TECHmomo4life01'")
     conn.exec("ALTER ROLE mosesa CREATEDB")
@@ -19,7 +19,7 @@ begin
   end
 
   %w[taskflows_development taskflows_test].each do |db|
-    res = conn.exec_params("SELECT 1 FROM pg_database WHERE datname=$1", [db])
+    res = conn.exec_params("SELECT 1 FROM pg_database WHERE datname=$1", [ db ])
     if res.ntuples == 0
       conn.exec("CREATE DATABASE #{db} OWNER mosesa")
       puts "Created database #{db} owned by mosesa"

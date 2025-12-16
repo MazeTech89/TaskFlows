@@ -18,7 +18,7 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
     it 'returns tasks sorted by calculated priority score' do
       # Log in user for request
       login_as(user, scope: :user)
-      
+
       # Create tasks with different priorities and deadlines
       overdue_task = create(:task,
         project: project,
@@ -43,18 +43,18 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
       )
 
       get '/tasks', params: { sort_by: 'priority_score' }, headers: { 'Accept' => 'application/json' }
-      
+
       expect(response).to have_http_status(:success)
-      
+
       # Parse JSON response
       json = JSON.parse(response.body)
-      task_scores = json.map { |t| 
-        Task.find(t['id']).calculate_priority_score 
+      task_scores = json.map { |t|
+        Task.find(t['id']).calculate_priority_score
       }
-      
+
       # Verify tasks are sorted by priority score (highest first)
       expect(task_scores).to eq(task_scores.sort.reverse)
-      
+
       # Verify overdue task has highest score
       expect(json.first['id']).to eq(overdue_task.id)
     end
@@ -63,7 +63,7 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
   describe 'POST /tasks with priority calculation' do
     it 'creates task and calculates priority score on the fly' do
       login_as(user, scope: :user)
-      
+
       post "/projects/#{project.id}/tasks", params: {
         task: {
           name: 'New task',
@@ -74,7 +74,7 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
       }
 
       expect(response).to have_http_status(:redirect)
-      
+
       created_task = Task.last
       expect(created_task.calculate_priority_score).to be > 40
     end
@@ -83,7 +83,7 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
   describe 'PATCH /tasks/:id with priority update' do
     it 'updates task priority and recalculates score' do
       login_as(user, scope: :user)
-      
+
       task = create(:task,
         project: project,
         priority: priority_low,
@@ -98,10 +98,10 @@ RSpec.describe "Tasks API with Priority Scoring", type: :request do
       }
 
       expect(response).to have_http_status(:redirect)
-      
+
       task.reload
       new_score = task.calculate_priority_score
-      
+
       expect(new_score).to be > initial_score
     end
   end

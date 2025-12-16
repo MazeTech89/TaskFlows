@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name          = "taskflows_utils"
   spec.version       = "0.1.0"
-  spec.authors       = ["Moses Ademokun"]
-  spec.email         = ["you@example.com"]
+  spec.authors       = [ "Moses Ademokun" ]
+  spec.email         = [ "you@example.com" ]
   spec.summary       = "A utility gem for taskflows"
   spec.description   = "Longer description of the taskflows_utils gem."
   spec.homepage      = "https://your-gem-homepage.com"
@@ -10,5 +10,5 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.files         = Dir["lib/**/*.rb"]
-  spec.require_paths = ["lib"]
+  spec.require_paths = [ "lib" ]
 end

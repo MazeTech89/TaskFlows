@@ -45,12 +45,12 @@ gem "image_processing", "~> 1.2"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-  
-  gem 'ruby_audit'
-  gem 'rubocop-rails'
-  gem 'rubocop'
-  gem 'brakeman'
-  gem 'bundler-audit'
+
+  gem "ruby_audit"
+  gem "rubocop-rails"
+  gem "rubocop"
+  gem "brakeman"
+  gem "bundler-audit"
   # Audits gems for known security defects (use config/bundler-audit.yml to ignore issues)
   gem "bundler-audit", require: false
 
@@ -73,29 +73,29 @@ group :test do
 end
 
 # Authentication
-gem 'devise'
+gem "devise"
 
 # Charts
-gem 'chartkick'
-gem 'groupdate'
+gem "chartkick"
+gem "groupdate"
 
 # Custom TaskFlows gems
-gem 'taskflows_utils', path: 'taskflows_utils'
+gem "taskflows_utils", path: "taskflows_utils"
 
 # Testing
 # gem 'rspec-rails', '~> 6.0'
 # Bootstrap for styling
-gem 'bootstrap', '~> 5.3.0'
-gem 'jquery-rails'
+gem "bootstrap", "~> 5.3.0"
+gem "jquery-rails"
 
 gem "sassc-rails"
 
 group :development, :test do
-  gem 'rspec-rails', '~> 6.0'
-  gem 'factory_bot_rails'
-  gem 'database_cleaner-active_record'
-  gem 'shoulda-matchers', '~> 5.0'
+  gem "rspec-rails", "~> 6.0"
+  gem "factory_bot_rails"
+  gem "database_cleaner-active_record"
+  gem "shoulda-matchers", "~> 5.0"
   # Add fiddle to silence 'fiddle will no longer be part of default gems' warnings on Ruby 3.5+
-  gem 'fiddle'
+  gem "fiddle"
   # NOTE: tests use PostgreSQL via config/database.yml defaults
 end

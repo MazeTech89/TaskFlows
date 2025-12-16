@@ -10,20 +10,20 @@ RSpec.describe Task, type: :model do
     context 'with deadline and priority' do
       # Nearer deadlines should score higher
       it 'returns higher score for tasks with nearer deadlines' do
-        task_soon = create(:task, 
+        task_soon = create(:task,
           project: project,
           priority: priority_high,
           due_date: Date.today + 1,
           name: "Urgent task"
         )
-        
+
         task_later = create(:task,
           project: project,
           priority: priority_high,
           due_date: Date.today + 30,
           name: "Future task"
         )
-        
+
         expect(task_soon.calculate_priority_score).to be > task_later.calculate_priority_score
       end
 
@@ -35,14 +35,14 @@ RSpec.describe Task, type: :model do
           due_date: Date.today + 7,
           name: "High priority"
         )
-        
+
         task_low = create(:task,
           project: project,
           priority: priority_low,
           due_date: Date.today + 7,
           name: "Low priority"
         )
-        
+
         expect(task_high.calculate_priority_score).to be > task_low.calculate_priority_score
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe Task, type: :model do
           name: "Overdue task",
           completed: false
         )
-        
+
         expect(overdue_task.calculate_priority_score).to be > 200
       end
     end
@@ -71,7 +71,7 @@ RSpec.describe Task, type: :model do
           due_date: nil,
           name: "No deadline"
         )
-        
+
         expect(task.calculate_priority_score).to be_a(Numeric)
         expect(task.calculate_priority_score).to be > 0
       end
@@ -85,10 +85,10 @@ RSpec.describe Task, type: :model do
           priority: priority_low,
           due_date: Date.today + 5
         )
-        
+
         score_default = task.calculate_priority_score
         score_override = task.calculate_priority_score(importance_override: 10.0)
-        
+
         expect(score_override).to be > score_default
       end
 
@@ -99,10 +99,10 @@ RSpec.describe Task, type: :model do
           priority: priority_high,
           due_date: Date.today + 5
         )
-        
+
         score_low_effort = task.calculate_priority_score(effort_override: 1.0)
         score_high_effort = task.calculate_priority_score(effort_override: 20.0)
-        
+
         expect(score_low_effort).to be > score_high_effort
       end
     end

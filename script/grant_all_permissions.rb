@@ -27,12 +27,12 @@ def database_exists?(db_name)
     user: DB_USER,
     password: DB_PASSWORD
   )
-  
+
   result = conn.exec_params(
     "SELECT 1 FROM pg_database WHERE datname = $1",
-    [db_name]
+    [ db_name ]
   )
-  
+
   exists = result.ntuples > 0
   conn.close
   exists
@@ -43,9 +43,9 @@ end
 
 def grant_database_permissions(db_name)
   return unless database_exists?(db_name)
-  
+
   puts "\nGranting permissions for database: #{db_name}"
-  
+
   # Connect to the specific database
   conn = PG.connect(
     host: DB_HOST,
@@ -54,33 +54,33 @@ def grant_database_permissions(db_name)
     user: DB_USER,
     password: DB_PASSWORD
   )
-  
+
   begin
     # Grant all privileges on database
     conn.exec("GRANT ALL PRIVILEGES ON DATABASE #{db_name} TO #{DB_USER}")
     puts "  ✓ Granted ALL PRIVILEGES on database"
-    
+
     # Get all tables in public schema
     tables = conn.exec(
       "SELECT tablename FROM pg_tables WHERE schemaname = 'public'"
     )
-    
+
     if tables.ntuples > 0
       # Grant all privileges on all tables
       conn.exec("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO #{DB_USER}")
       puts "  ✓ Granted ALL PRIVILEGES on all tables"
-      
+
       # Alter owner for all tables
       tables.each do |row|
         table_name = row['tablename']
         conn.exec("ALTER TABLE #{table_name} OWNER TO #{DB_USER}")
         puts "    ✓ Changed owner of #{table_name} to #{DB_USER}"
       end
-      
+
       # Grant all privileges on all sequences
       conn.exec("GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO #{DB_USER}")
       puts "  ✓ Granted ALL PRIVILEGES on all sequences"
-      
+
       # Alter owner for all sequences
       sequences = conn.exec(
         "SELECT sequencename FROM pg_sequences WHERE schemaname = 'public'"
@@ -93,12 +93,12 @@ def grant_database_permissions(db_name)
     else
       puts "  ℹ No tables found in database"
     end
-    
+
     # Grant default privileges for future objects
     conn.exec("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO #{DB_USER}")
     conn.exec("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO #{DB_USER}")
     puts "  ✓ Set default privileges for future objects"
-    
+
   rescue PG::Error => e
     puts "  ✗ Error: #{e.message}"
   ensure

@@ -8,7 +8,7 @@ RSpec.describe User, type: :model do
 
   describe 'validations' do
     it { should validate_presence_of(:email) }
-    
+
     it 'validates uniqueness of email (case insensitive)' do
       User.create!(email: "test@example.com", password: "password123")
       user2 = User.new(email: "TEST@example.com", password: "password123")
@@ -38,4 +38,3 @@ RSpec.describe User, type: :model do
     end
   end
 end
-

@@ -33,7 +33,7 @@ begin
   if total_users > 0
     # Get all users
     users = conn.exec("SELECT id, email, created_at, updated_at FROM users ORDER BY id")
-    
+
     puts "User Details:"
     puts "-" * 70
     users.each do |user|

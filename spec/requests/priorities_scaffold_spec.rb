@@ -24,21 +24,21 @@ RSpec.describe "Priorities scaffold (requests)", type: :request do
   describe 'POST /priorities' do
     it 'creates a priority and redirects (or returns created)' do
       post '/priorities', params: { priority: { name: 'High', score: 10.0 } }
-      expect(response).to satisfy { |r| [201, 302].include?(r.status) }
+      expect(response).to satisfy { |r| [ 201, 302 ].include?(r.status) }
     end
   end
 
   describe 'PATCH /priorities/:id' do
     it 'updates a priority' do
       patch '/priorities/1', params: { priority: { name: 'Updated' } }
-      expect(response).to satisfy { |r| [200, 302].include?(r.status) }
+      expect(response).to satisfy { |r| [ 200, 302 ].include?(r.status) }
     end
   end
 
   describe 'DELETE /priorities/:id' do
     it 'destroys a priority' do
       delete '/priorities/1'
-      expect(response).to satisfy { |r| [200, 302, 204].include?(r.status) }
+      expect(response).to satisfy { |r| [ 200, 302, 204 ].include?(r.status) }
     end
   end
 end

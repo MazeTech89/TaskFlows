@@ -18,4 +18,3 @@ end
 # Auto-load custom service and worker classes
 Rails.autoloaders.main.push_dir("app/services")
 Rails.autoloaders.main.push_dir("app/workers")
-

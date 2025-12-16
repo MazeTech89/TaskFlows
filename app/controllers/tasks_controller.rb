@@ -8,24 +8,24 @@ class TasksController < ApplicationController
     @tasks = Task.includes(:project, :priority)
                  .joins(:project)
                  .where(projects: { user_id: current_user.id })
-    
+
     # Apply filters from query params
     @tasks = @tasks.by_project(params[:project_id]) if params[:project_id].present?
     @tasks = @tasks.by_priority(params[:priority_id]) if params[:priority_id].present?
     @tasks = @tasks.by_completion_status(params[:status]) if params[:status].present?
-    
+
     # Search by name (case-insensitive)
     if params[:search].present?
-      @tasks = @tasks.where('tasks.name ILIKE ?', "%#{params[:search]}%")
+      @tasks = @tasks.where("tasks.name ILIKE ?", "%#{params[:search]}%")
     end
-    
+
     # Filter by due date
     if params[:due_date].present?
       @tasks = @tasks.where(due_date: params[:due_date])
     end
-    
+
     # Sort by priority score if requested
-    if params[:sort_by] == 'priority_score'
+    if params[:sort_by] == "priority_score"
       @tasks = @tasks.to_a.sort_by { |task| -task.calculate_priority_score }
     else
       @tasks = @tasks.order(created_at: :desc)
