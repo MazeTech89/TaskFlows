@@ -19,6 +19,15 @@ class PrioritiesController < ApplicationController
     end
   end
 
+  # GET /priorities/new - new priority form
+  def new
+    @priority = Priority.new
+  end
+
+  # GET /priorities/:id/edit - edit priority form
+  def edit
+  end
+
   # POST /priorities - create new priority
   def create
     @priority = Priority.new(priority_params)
