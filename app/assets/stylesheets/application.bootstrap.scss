@@ -1,1 +1,11 @@
-/* UI frameworks intentionally disabled for TDD stability */
+// Use Bootstrap from the gem
+@import "bootstrap";
+
+// Custom styles
+body {
+  padding-top: 70px;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}

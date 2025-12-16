@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.description   = "Longer description of the taskflows_utils gem."
   spec.homepage      = "https://your-gem-homepage.com"
   spec.license       = "MIT"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.files         = Dir["lib/**/*.rb"]
   spec.require_paths = ["lib"]
