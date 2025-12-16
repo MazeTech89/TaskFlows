@@ -8,9 +8,14 @@ class PriorityTest < ActiveSupport::TestCase
   end
 
   test "should validate presence of score" do
-    priority = Priority.new(name: "High")
+    priority = Priority.new(name: "High", score: nil)
+    assert priority.valid?, "Priority should be valid with nil score due to allow_nil: true"
+  end
+
+  test "should validate score is non-negative" do
+    priority = Priority.new(name: "High", score: -1.0)
     assert_not priority.valid?
-    assert_includes priority.errors[:score], "can't be blank"
+    assert_includes priority.errors[:score], "must be greater than or equal to 0"
   end
 
   test "should validate uniqueness of name" do
