@@ -1,4 +1,4 @@
-class RenameTitleToNameInTasks < ActiveRecord::Migration[7.0]
+class RenameTitleToNameInTasks < ActiveRecord::Migration[8.1]
   def change
     rename_column :tasks, :title, :name
   end
