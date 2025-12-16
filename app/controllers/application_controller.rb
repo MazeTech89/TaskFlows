@@ -8,4 +8,9 @@ class ApplicationController < ActionController::Base
 
   # Require user login for all actions (Devise)
   before_action :authenticate_user!
+
+  # Redirect to dashboard after successful sign in
+  def after_sign_in_path_for(resource)
+    dashboard_path
+  end
 end
