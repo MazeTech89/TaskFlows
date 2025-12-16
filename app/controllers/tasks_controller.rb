@@ -1,18 +1,20 @@
+# Tasks controller - manages tasks with filtering and search capabilities
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
-  # GET /tasks or /tasks.json
+  # GET /tasks - list all tasks with optional filters
   def index
+    # Load tasks for current user's projects
     @tasks = Task.includes(:project, :priority)
                  .joins(:project)
                  .where(projects: { user_id: current_user.id })
     
-    # Apply filters
+    # Apply filters from query params
     @tasks = @tasks.by_project(params[:project_id]) if params[:project_id].present?
     @tasks = @tasks.by_priority(params[:priority_id]) if params[:priority_id].present?
     @tasks = @tasks.by_completion_status(params[:status]) if params[:status].present?
     
-    # Search by name
+    # Search by name (case-insensitive)
     if params[:search].present?
       @tasks = @tasks.where('tasks.name ILIKE ?', "%#{params[:search]}%")
     end
@@ -25,23 +27,23 @@ class TasksController < ApplicationController
     @tasks = @tasks.order(created_at: :desc)
   end
 
-  # GET /tasks/1 or /tasks/1.json
+  # GET /tasks/1 - show single task
   def show
   end
 
-  # GET /tasks/new
+  # GET /tasks/new - new task form (optionally within a project context)
   def new
     @project = params[:project_id].present? ? current_user.projects.find(params[:project_id]) : current_user.projects.first
     @task = Task.new
     @task.project_id = @project&.id
   end
 
-  # GET /tasks/1/edit
+  # GET /tasks/1/edit - edit task form
   def edit
     @project = @task.project
   end
 
-  # POST /tasks or /tasks.json
+  # POST /tasks - create new task
   def create
     @task = Task.new(task_params)
     @project = @task.project
@@ -57,7 +59,7 @@ class TasksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /tasks/1 or /tasks/1.json
+  # PATCH/PUT /tasks/1 - update task
   def update
     respond_to do |format|
       if @task.update(task_params)
@@ -70,7 +72,7 @@ class TasksController < ApplicationController
     end
   end
 
-  # DELETE /tasks/1 or /tasks/1.json
+  # DELETE /tasks/1 - delete task
   def destroy
     @task.destroy!
 
@@ -81,14 +83,14 @@ class TasksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Find task scoped to current user's projects
     def set_task
       @task = Task.joins(:project)
                   .where(projects: { user_id: current_user.id })
                   .find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
+    # Permitted parameters for security
     def task_params
       params.expect(task: [ :name, :due_date, :completed, :project_id, :priority_id ])
     end

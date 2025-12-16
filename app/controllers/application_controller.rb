@@ -1,9 +1,11 @@
+# Base controller - all other controllers inherit from this
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+  # Only allow modern browsers with webp, web push, CSS nesting support
   allow_browser versions: :modern
 
-  # Changes to the importmap will invalidate the etag for HTML responses
+  # Invalidate cache when importmap changes
   stale_when_importmap_changes
 
+  # Require user login for all actions (Devise)
   before_action :authenticate_user!
 end

@@ -1,25 +1,26 @@
+# Projects controller - manages CRUD operations for user's projects
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ]
 
-  # GET /projects or /projects.json
+  # GET /projects - list all user's projects
   def index
     @projects = current_user.projects.includes(:tasks)
   end
 
-  # GET /projects/1 or /projects/1.json
+  # GET /projects/1 - show single project
   def show
   end
 
-  # GET /projects/new
+  # GET /projects/new - form for new project
   def new
     @project = Project.new
   end
 
-  # GET /projects/1/edit
+  # GET /projects/1/edit - edit form
   def edit
   end
 
-  # POST /projects or /projects.json
+  # POST /projects - create new project
   def create
     @project = current_user.projects.build(project_params)
 
@@ -34,7 +35,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /projects/1 or /projects/1.json
+  # PATCH/PUT /projects/1 - update existing project
   def update
     respond_to do |format|
       if @project.update(project_params)
@@ -47,7 +48,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # DELETE /projects/1 or /projects/1.json
+  # DELETE /projects/1 - delete project and its tasks
   def destroy
     @project.destroy!
 
@@ -58,12 +59,12 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Find project scoped to current user
     def set_project
       @project = current_user.projects.find(params.expect(:id))
     end
 
-    # Only allow a list of trusted parameters through.
+    # Permitted parameters for security
     def project_params
       params.expect(project: [ :name, :description, :user_id ])
     end

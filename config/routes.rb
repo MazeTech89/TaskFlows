@@ -1,31 +1,29 @@
+# Application routes - maps URLs to controller actions
 Rails.application.routes.draw do
+  # Devise authentication routes for users (/users/sign_in, /users/sign_up, etc.)
   devise_for :users
   
+  # Root path and dashboard
   root "dashboard#index"
   get "/dashboard", to: "dashboard#index", as: :dashboard
   
+  # Nested routes: create tasks within project context
   resources :projects do
     resources :tasks, only: [:new, :create]
   end
   
+  # Standalone task routes (show, edit, update, destroy)
   resources :tasks, except: [:new, :create]
+  
+  # Priority management routes
   resources :priorities
 
+  # User profile routes
   resource :user,
          path: "users",
          controller: "users",
          path_names: { new: "signup" }
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check endpoint for monitoring (returns 200 if app is running)
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
