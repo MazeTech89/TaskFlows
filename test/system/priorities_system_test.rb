@@ -8,7 +8,13 @@ class PrioritiesSystemTest < ApplicationSystemTestCase
   end
 
   test "visiting priorities index" do
-    sign_in @user
+    # Sign in manually through the UI
+    visit new_user_session_url
+    fill_in "Email", with: @user.email
+    fill_in "Password", with: "password123"
+    click_on "Log in"
+
+    # Visit priorities page
     visit priorities_url
 
     assert_selector "h1", text: "Priorities"
