@@ -1,9 +1,9 @@
-name: CI
+name: Ruby on Rails CI
 
 on:
   pull_request:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
 
 jobs:
   scan_ruby:
