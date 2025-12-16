@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <h1><%= @priority.name %></h1>
+
+  <div class="card">
+    <div class="card-body">
+      <p><strong>Score:</strong> <%= @priority.score %></p>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= link_to "Edit", edit_priority_path(@priority), class: "btn btn-primary" %>
+    <%= link_to "Back", priorities_path, class: "btn btn-secondary" %>
+  </div>
+</div>
