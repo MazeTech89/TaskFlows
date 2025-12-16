@@ -56,3 +56,5 @@
 .DS_Store
 Thumbs.db
 
+# TDD demonstration documentation (generated file)
+TDD_Demonstration_TaskFlows_Utils.md

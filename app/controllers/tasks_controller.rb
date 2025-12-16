@@ -24,7 +24,17 @@ class TasksController < ApplicationController
       @tasks = @tasks.where(due_date: params[:due_date])
     end
     
-    @tasks = @tasks.order(created_at: :desc)
+    # Sort by priority score if requested
+    if params[:sort_by] == 'priority_score'
+      @tasks = @tasks.to_a.sort_by { |task| -task.calculate_priority_score }
+    else
+      @tasks = @tasks.order(created_at: :desc)
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @tasks }
+    end
   end
 
   # GET /tasks/1 - show single task

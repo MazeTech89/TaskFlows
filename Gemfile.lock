@@ -1,3 +1,8 @@
+PATH
+  remote: taskflows_utils
+  specs:
+    taskflows_utils (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -468,6 +473,7 @@ DEPENDENCIES
   solid_cache
   solid_queue
   stimulus-rails
+  taskflows_utils!
   thruster
   turbo-rails
   tzinfo-data

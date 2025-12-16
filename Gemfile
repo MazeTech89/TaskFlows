@@ -79,6 +79,9 @@ gem 'devise'
 gem 'chartkick'
 gem 'groupdate'
 
+# Custom TaskFlows gems
+gem 'taskflows_utils', path: 'taskflows_utils'
+
 # Testing
 # gem 'rspec-rails', '~> 6.0'
 # Bootstrap for styling
