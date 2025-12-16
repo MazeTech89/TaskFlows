@@ -18,9 +18,6 @@ Rails.application.routes.draw do
   # Priority management routes
   resources :priorities
 
-  # User profile routes
-  resource(:user, path: "users", controller: "users", path_names: { new: "signup" }, only: [])
-
   # Health check endpoint for monitoring (returns 200 if app is running)
   get "up" => "rails/health#show", as: :rails_health_check
 end
