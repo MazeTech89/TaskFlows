@@ -39,6 +39,11 @@
 
 /node_modules
 
+# Ignore project documentation and backup
+CAD_Project_Report.md
+Video_Demonstration_Script.md
+_backup_20251217/
+
 # Rails logs and temp files
 /log/*
 /tmp/*

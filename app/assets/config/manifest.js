@@ -3,3 +3,7 @@
 //= link application.css
 //= link application.bootstrap.css
 //= link application.js
+//= link chart.js--auto.js
+//= link controllers/application.js
+//= link controllers/hello_controller.js
+//= link controllers/index.js
