@@ -21,9 +21,7 @@ test:
   database: taskflows_test
 
 production:
-  primary:
-    <<: *default
-    database: taskflows_production
+  url: <%= ENV['DATABASE_URL'] %>
 
   cache:
     <<: *default
