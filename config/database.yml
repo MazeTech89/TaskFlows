@@ -22,15 +22,3 @@ test:
 
 production:
   url: <%= ENV['DATABASE_URL'] %>
-
-  cache:
-    <<: *default
-    database: taskflows_cache_production
-
-  queue:
-    <<: *default
-    database: taskflows_queue_production
-
-  cable:
-    <<: *default
-    database: taskflows_cable_production
