@@ -88,7 +88,7 @@ gem "jquery-rails"
 gem "sassc-rails"
 
 group :development, :test do
-  gem "rspec-rails", "~> 6.0"
+  gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails"
   gem "database_cleaner-active_record"
   gem "shoulda-matchers", "~> 5.0"
