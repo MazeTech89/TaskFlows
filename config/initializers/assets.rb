@@ -16,8 +16,8 @@ Rails.application.config.assets.precompile << "bootstrap.bundle.min.js"
 # Propshaft::Assembly and does not support `cache=`. Only apply this when the
 # Sprockets environment is actually in use.
 if Rails.env.development? && defined?(Sprockets)
-	assets_env = (Rails.application.assets if Rails.application.respond_to?(:assets))
-	if assets_env && assets_env.respond_to?(:cache=)
-		assets_env.cache = Sprockets::Cache::MemoryStore.new
-	end
+  assets_env = (Rails.application.assets if Rails.application.respond_to?(:assets))
+  if assets_env && assets_env.respond_to?(:cache=)
+    assets_env.cache = Sprockets::Cache::MemoryStore.new
+  end
 end
