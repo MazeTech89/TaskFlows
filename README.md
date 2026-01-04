@@ -100,7 +100,7 @@ Overall, this project provided valuable experience in full-stack Rails developme
 Below are important links related to this application:
 
 - **GitHub Repository:** [https://github.com/MazeTech89/TaskFlows](https://github.com/MazeTech89/TaskFlows)
-- **Deployed Application:** [https://your-app-name.herokuapp.com](https://your-app-name.herokuapp.com) <!-- Replace with actual deployed URL -->
+- **Deployed Application:** [https://taskflows-cad-2c1f46bbd901.herokuapp.com/](https://taskflows-cad-2c1f46bbd901.herokuapp.com/)
 - **Video Presentation:** [Video Link](https://your-video-link.com) <!-- Replace with actual video link if available -->
 
 Please update these links with your actual repository, deployment, and presentation URLs as needed.

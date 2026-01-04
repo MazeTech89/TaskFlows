@@ -2,7 +2,7 @@
 
 Use this as your **recording script + checklist** for the Cloud Application Development module video deliverable.
 
-> Replace placeholders like **<YOUR DEPLOYED URL>** and **<YOUR GITHUB URL>** before recording.
+> Replace placeholders like **<YOUR GITHUB URL>** before recording.
 
 ---
 
@@ -30,7 +30,7 @@ Use this as your **recording script + checklist** for the Cloud Application Deve
 Say:
 - “Hi, I’m <NAME>. This is **Taskflows**, my Rails SaaS project for Cloud Application Development.”
 - “Repository: <YOUR GITHUB URL>”
-- “Deployed URL: <YOUR DEPLOYED URL>”
+- “Deployed URL: https://taskflows-cad-2c1f46bbd901.herokuapp.com/”
 
 Show on screen:
 - Browser tab with deployed app open.
@@ -167,7 +167,7 @@ Say:
 ## 3) Click-by-click demo checklist (so you don’t miss anything)
 
 Before recording:
-- Confirm the deployed site loads: **<YOUR DEPLOYED URL>**
+- Confirm the deployed site loads: **https://taskflows-cad-2c1f46bbd901.herokuapp.com/**
 - Have a test account ready (or sign up during video).
 - Prepare 1–2 sample projects and 3–5 tasks.
 - Keep the demo dataset small so you can CRUD quickly.
@@ -221,7 +221,7 @@ Run the local CI script (optional, only if it’s fast on your machine):
 ## 6) Placeholders to fill before submission
 
 - GitHub repo URL: **<YOUR GITHUB URL>**
-- Deployed URL: **<YOUR DEPLOYED URL>**
+- Deployed URL: **https://taskflows-cad-2c1f46bbd901.herokuapp.com/**
 - Video URL (if you host it): **<YOUR VIDEO URL>**
 
 ---
