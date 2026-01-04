@@ -21,7 +21,16 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities
-        run: bin/brakeman --no-pager --no-check-updates
+        shell: bash
+        run: |
+          set -e
+          bin/brakeman --no-pager || status=$?
+          # Brakeman exits 5 when it's outdated (update check). Don't fail CI for that.
+          if [ "${status:-0}" -eq 5 ]; then
+            echo "Brakeman is outdated; continuing CI."
+            exit 0
+          fi
+          exit "${status:-0}"
       
       - name: Scan for security vulnerabilities in gems
         run: bin/bundler-audit
