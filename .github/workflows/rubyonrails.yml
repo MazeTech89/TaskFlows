@@ -21,7 +21,7 @@ jobs:
           bundler-cache: true
 
       - name: Scan for common Rails security vulnerabilities
-        run: bin/brakeman --no-pager
+        run: bin/brakeman --no-pager --no-check-updates
       
       - name: Scan for security vulnerabilities in gems
         run: bin/bundler-audit
