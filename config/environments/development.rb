@@ -61,6 +61,13 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # Windows note: if the project directory is in a protected location (e.g., under a Ruby install folder),
+  # Sprockets may fail to write/update file timestamps in tmp/cache/assets and raise Errno::EACCES.
+  # Using an in-memory Sprockets cache avoids filesystem writes during development.
+  config.assets.configure do |env|
+    env.cache = ActiveSupport::Cache::MemoryStore.new
+  end
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
