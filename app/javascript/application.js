@@ -2,7 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers" // for Stimulus
 // import "@rails/ujs"   // removed: not needed with importmap
-import "bootstrap"
 
 // Import and configure Chartkick with Chart.js
 import Chartkick from "chartkick"
