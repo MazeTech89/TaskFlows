@@ -71,7 +71,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Task Completion Trend (Last 7 Days)</h5>
-          <%= line_chart @completion_trend, xtitle: "Date", ytitle: "Tasks Completed" %>
+          <%= line_chart @completion_trend, discrete: true, xtitle: "Date", ytitle: "Tasks Completed" %>
         </div>
       </div>
     </div>
