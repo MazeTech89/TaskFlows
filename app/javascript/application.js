@@ -5,6 +5,7 @@ import "controllers" // for Stimulus
 
 // Import and configure Chartkick with Chart.js
 import Chartkick from "chartkick"
-import Chart from "chart.js/auto"
 
-Chartkick.use(Chart)
+if (window.Chart) {
+	Chartkick.use(window.Chart)
+}
