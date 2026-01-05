@@ -4,8 +4,10 @@ import "controllers" // for Stimulus
 // import "@rails/ujs"   // removed: not needed with importmap
 
 // Import and configure Chartkick with Chart.js
-import Chartkick from "chartkick"
+import * as ChartkickModule from "chartkick"
+
+const Chartkick = ChartkickModule.default || ChartkickModule.Chartkick || window.Chartkick
 
 if (window.Chart) {
-	Chartkick.use(window.Chart)
+	Chartkick?.use?.(window.Chart)
 }
